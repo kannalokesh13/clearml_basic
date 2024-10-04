@@ -1,0 +1,19 @@
+data_source:
+  local_path: C:\Users\LokeshKanna\Downloads\imagenet
+
+split:
+  dir : artifacts/data
+  train : train
+  test : test
+
+data_dir:
+  dir : artifacts/data
+  train : train
+  test : test
+
+train:
+  model_dir: artifacts/model
+
+training_info:
+  epochs : 3
+  learning_rate : 0.001
