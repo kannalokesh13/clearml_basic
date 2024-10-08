@@ -21,7 +21,7 @@ def data_load(yaml_file_path):
     batch_size = 8
     root_dir = params_yaml['data_dir']['dir']
 
-    dataset = Dataset.create(dataset_name="animal_classification", dataset_project="example_classification1")
+    dataset = Dataset.create(dataset_name="animal_classification", dataset_project="example_classification2")
     dataset.add_files(root_dir)
     dataset.upload()
     dataset.finalize()
@@ -105,7 +105,7 @@ def model_train(yaml_file_path):
 
     # mlflow.log_param("git_branch", git_branch)
 
-    task = Task.init(project_name='example_classification1', task_name='experiment2')
+    task = Task.init(project_name='example_classification2', task_name='experiment2')
 
 
     learning_rate = params_yaml['training_info']['learning_rate']
