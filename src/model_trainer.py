@@ -26,6 +26,8 @@ def data_load(yaml_file_path):
     dataset.upload()
     dataset.finalize()
 
+    dataset_id = dataset.id
+
     train_folder = params_yaml['data_dir']['train']
     test_folder = params_yaml['data_dir']['test']
 
@@ -48,7 +50,8 @@ def data_load(yaml_file_path):
 
     print("Completed data loading")
 
-    return trainloader, testloader
+    return trainloader, testloader, dataset_id
+
 
 
 
@@ -115,7 +118,16 @@ def model_train(yaml_file_path):
 
     task.connect(params)
 
-    trainloader, testloader = data_load(yaml_file_path)
+    trainloader, testloader, dataset_id = data_load(yaml_file_path)
+
+    dataset = Dataset.get(dataset_id=dataset_id)
+
+    dataset_path = dataset.get_local_copy()
+
+    task.connect_configuration(
+    {"Datasets": {"dataset_id": dataset_id, "dataset_name": "Animal Classification"}}
+)
+
 
     model_dir = params_yaml['train']['model_dir']
 
@@ -175,7 +187,7 @@ def model_train(yaml_file_path):
 
     print(f'Accuracy on test set: {n_correct / n_total :.3f}')
 
-    task.get_logger().report_scalar("Accuracy", "train", iteration=epochs, value=n_correct / n_total)
+    task.get_logger().report_single_value(name = "Accuracy", value = n_correct / n_total)
 
     # mlflow.log_metric("Accuracy", n_correct / n_total)
 
